@@ -67,8 +67,6 @@ class NL2FOL:
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
-                verbosity="low",
-                reasoning_effort="low",
             )
             return completion.choices[0].message.content
         
