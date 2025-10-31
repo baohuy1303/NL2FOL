@@ -67,9 +67,8 @@ class NL2FOL:
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
+                verbosity="low",
                 reasoning_effort="low",
-                verbosity="low", 
-                
             )
             return completion.choices[0].message.content
         
@@ -132,15 +131,7 @@ class NL2FOL:
         prompt1=prompt+prompt_template
         self.implication_properties = first_non_empty_line(self.get_llm_result(prompt1))
         print("Implication Properties: ", self.claim_properties)
-        try:
-            if isinstance(self.claim_properties, str) and isinstance(self.implication_properties, str) \
-               and '(' in self.claim_properties and '(' in self.implication_properties:
-                self.claim_properties, self.implication_properties = fix_inconsistent_arities(
-                    split_string_except_in_brackets(self.claim_properties,','),
-                    split_string_except_in_brackets(self.implication_properties,','))
-        except Exception as _e:
-            if self.debug:
-                print(f"Skipping arity fix due to error: {_e}")
+        self.claim_properties, self.implication_properties = fix_inconsistent_arities(split_string_except_in_brackets(self.claim_properties,','),split_string_except_in_brackets(self.implication_properties,','))
 
         if self.debug:
             print("Claim Properties: ", self.claim_properties)
@@ -261,11 +252,7 @@ class NL2FOL:
                     with open("prompts/prompt_entity_relation.txt", encoding="ascii", errors="ignore") as f:
                         prompt = f.read().format(c_re,i_re)
                     result = self.get_llm_result(prompt)
-                    m = re.search(r'[1-3]', str(result))
-                    if not m:
-                        # Unparseable response; skip relation
-                        continue
-                    relationship = int(m.group(0))
+                    relationship = int(result)
                     # Ensure the response is one of the expected options
                     if relationship == 1:
                         self.equal_entities.append((c_re,i_re))
