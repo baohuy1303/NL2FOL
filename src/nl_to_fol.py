@@ -66,7 +66,10 @@ class NL2FOL:
                 model="gpt-5-mini",
                 messages=[
                     {"role": "user", "content": prompt}
-                ]
+                ],
+                reasoning_effort="low",
+                verbosity="low", 
+                
             )
             return completion.choices[0].message.content
         
