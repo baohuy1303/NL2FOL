@@ -62,43 +62,12 @@ class NL2FOL:
             )
             return sequences[0]["generated_text"].removeprefix(prompt)
         elif model_type=='gpt':
-            def estimate_token_count(text: str) -> int:
-                try:
-                    text = str(text)
-                except Exception:
-                    text = ""
-                return max(1, len(text) // 4)
-
-            def compute_max_completion_tokens(input_tokens: int) -> int:
-                target = int(input_tokens * 0.05)
-                if target < 150:
-                    target = 150
-                if target > 1200:
-                    target = 1200
-                return target
-
-            input_tokens = estimate_token_count(prompt)
-            dyn_max_tokens = compute_max_completion_tokens(input_tokens)
-            system_constraints = (
-                "You are a strict formatter. Follow these rules exactly: "
-                "1) Output only the requested fields with no explanations, prefaces, or extra lines. "
-                "2) No markdown. "
-                "3) Keep responses minimal and deterministic. "
-                "4) When asked for Claim and Implication, return exactly two lines: 'Claim: ...' and 'Implication: ...'. "
-                "5) When asked for Logical Form, output only the formula on one line."
-            )
+            
             completion = client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": system_constraints},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0,
-                top_p=1,
-                max_completion_tokens=dyn_max_tokens,
-                frequency_penalty=0.2,
-                presence_penalty=0,
-                stop=["\n\n"]
             )
             return completion.choices[0].message.content
         

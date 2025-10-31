@@ -4,7 +4,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from nl_to_fol import NL2FOL
 
 inp = r"e:\Coding\Research\NL2FOL\test_res\wiki1_articles.csv"
-out = r"e:\Coding\Research\NL2FOL\test_res\wiki1_folFormatted_GPT5Mini_2.csv"
+out = r"e:\Coding\Research\NL2FOL\test_res\Final_CacheDelete\BaseGPT5Mini.csv"
 model_name = "gpt-5-mini"
 nli_model_name = "roberta-large-mnli"
 
