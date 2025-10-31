@@ -2,10 +2,14 @@ import openai
 import pandas as pd
 import transformers
 import torch
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-openai.api_key = "your_openai_key_here"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 model = "gpt-4o"  # [gpt-4o, gpt-4o-mini, o1-preview, o1-mini]
 method = "few_shot_cot"  # [zero_shot, few_shot, few_shot_cot]

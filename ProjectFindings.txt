@@ -1,0 +1,18 @@
+- Scrip doen't learn from CSVs. All prompting, the CSVs are imput examples.
+Ex:
+python src/nl_to_fol.py 
+--model_name gpt-4o 
+--nli_model_name roberta-large-mnli 
+--run_name demo 
+--dataset logic 
+--length 10
+
+Reads 10 “fallacy/negative” texts from data/fallacies.csv
+Reads 10 “positive entailment” texts from data/nli_entailments_test.csv
+Merges and normalizes text into articles. Saves this combined sample as 
+dataset.csv
+
+Each row's article column is ran through GPT to extract claim and implication. 
+Then NLI classifies relations between claim and implication.
+Logical Form 1 (LF1) is tighter and precise.
+Logical Form 2 (LF2) is more robust but less specific. (when mappings are uncertain)
